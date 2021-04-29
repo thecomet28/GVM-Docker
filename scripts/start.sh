@@ -280,7 +280,7 @@ rm -rf /tmp/ospd.sock
 ln -s /var/run/ospd/ospd.sock /tmp/ospd.sock
 
 echo "Starting Greenbone Vulnerability Manager..."
-su -c "gvmd --listen=0.0.0.0 --port=9390" gvm
+su -c "gvmd --listen=0.0.0.0 --port=9390 --max-ips-per-target=65536" gvm
 
 echo "Waiting for Greenbone Vulnerability Manager to finish startup..."
 until su -c "gvmd --get-users" gvm; do
