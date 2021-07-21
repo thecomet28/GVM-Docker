@@ -7,16 +7,16 @@ COPY install-pkgs.sh /install-pkgs.sh
 
 RUN bash /install-pkgs.sh
 
-ENV gvm_libs_version="v21.4.0" \
-    openvas_scanner_version="v21.4.0" \
+ENV gvm_libs_version="v21.4.1" \
+    openvas_scanner_version="v21.4.1" \
     #pggvm_version="fa973261bee877590e0d0096eb0f9213a38a7965" \
-    gvmd_version="v21.4.0" \
-    gsa_version="v21.4.0" \
-    gvm_tools_version="21.1.0" \
+    gvmd_version="v21.4.2" \
+    gsa_version="v21.4.1" \
+    gvm_tools_version="21.6.1" \
     openvas_smb="v21.4.0" \
-    open_scanner_protocol_daemon="v21.4.0" \
-    ospd_openvas="v21.4.0" \
-    python_gvm_version="21.1.3"
+    open_scanner_protocol_daemon="v21.4.1" \
+    ospd_openvas="v21.4.1" \
+    python_gvm_version="21.6.0"
 
     #
     # install libraries module for the Greenbone Vulnerability Management Solution
