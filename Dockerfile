@@ -10,11 +10,11 @@ RUN bash /install-pkgs.sh
 ENV gvm_libs_version="v21.4.2" \
     openvas_scanner_version="v21.4.2" \
     #pggvm_version="fa973261bee877590e0d0096eb0f9213a38a7965" \
-    gvmd_version="v21.4.3.dev1" \
+    gvmd_version="v21.4.3" \
     gsa_version="v21.4.2" \
     gvm_tools_version="21.6.1" \
     openvas_smb="v21.4.0" \
-    open_scanner_protocol_daemon="v21.4.3.dev1" \
+    open_scanner_protocol_daemon="v21.4.3" \
     ospd_openvas="v21.4.2" \
     python_gvm_version="21.6.0"
 
