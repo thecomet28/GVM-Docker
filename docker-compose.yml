@@ -1,9 +1,9 @@
 version: "3"
 services:
     gvm:
-        image: netizensoc/gvm-scanner
+        image: netizensoc/gvm-scanner:dev
         volumes:
-          - <path to data>:/data
+          - gvm-data:/data
         environment:
           - USERNAME="admin"
           - PASSWORD="admin"
@@ -11,7 +11,7 @@ services:
           - SMTPPORT=25
           - AUTO_SYNC=true
           - HTTPS=true
-          - TZ="UTC"
+          - TZ="ETC"
           - SSHD=false
           - DB_PASSWORD="none"
         ports:
