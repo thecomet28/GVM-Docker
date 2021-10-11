@@ -19,3 +19,5 @@ services:
           - "5432:5432" # Access PostgreSQL database from external tools
           - "2222:22"   # SSH for remote sensors
         restart: unless-stopped
+volumes:
+    gvm-data:
