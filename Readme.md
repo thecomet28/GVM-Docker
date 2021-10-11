@@ -1,5 +1,3 @@
-![Greenbone Vulnerability Management with OpenVAS](https://github.com/SCS-Labs/Images/raw/main/scs-gvm.png)
-
 This setup is based on Greenbone Vulnerability Management and OpenVAS. We have made improvements to help stability and functionality.
 
 You want to send GVM/OpenVAS results to Elasticsearch, try our [GVM Logstash project](https://github.com/Secure-Compliance-Solutions-LLC/gvm-logstash).
