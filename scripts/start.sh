@@ -107,6 +107,23 @@ if [ ! -f "/firstrun" ]; then
 	su -c "touch /run/ospd/feed-update.lock" gvm
 	mkdir -p /var/lib/openvas/plugins/
 	chown -R gvm:gvm /var/lib/openvas/plugins/
+	
+	sudo chown -R gvm:gvm /var/lib/gvm
+	sudo chown -R gvm:gvm /var/lib/openvas
+	sudo chown -R gvm:gvm /var/log/gvm
+	sudo chown -R gvm:gvm /run/gvm
+
+	sudo chmod -R g+srw /var/lib/gvm
+	sudo chmod -R g+srw /var/lib/openvas
+	sudo chmod -R g+srw /var/log/gvm
+
+	sudo chown gvm:gvm /usr/sbin/gvmd
+	sudo chmod 6750 /usr/sbin/gvmd
+
+	sudo chown gvm:gvm /usr/bin/greenbone-nvt-sync
+	sudo chmod 740 /usr/sbin/greenbone-feed-sync
+	sudo chown gvm:gvm /usr/sbin/greenbone-*-sync
+	sudo chmod 740 /usr/sbin/greenbone-*-sync
 
 	touch /firstrun 
 fi
