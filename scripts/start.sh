@@ -75,23 +75,37 @@ if [ ! -f "/firstrun" ]; then
 	ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 	echo "Creating Greenbone Vulnerability system user..."
-	useradd --home-dir /usr/local/share/gvm gvm
+#	useradd --home-dir /usr/local/share/gvm gvm
+#	
+#	chown gvm:gvm -R /usr/local/share/openvas
+#	chown gvm:gvm -R /usr/local/var/lib/openvas
+#	
+#	chown gvm:gvm -R /usr/local/share/gvm
+#	
+#	mkdir /usr/local/var/lib/gvm/cert-data
+#	
+#	chown gvm:gvm -R /usr/local/var/lib/gvm
+#	chmod 770 -R /usr/local/var/lib/gvm
+#	
+#	chown gvm:gvm -R /usr/local/var/log/gvm
+#	
+#	chown gvm:gvm -R /usr/local/var/run
+	mkdir -p /var/lib/gvm
+	mkdir -p /var/lib/gvm/CA
+	mkdir -p /var/lib/gvm/cert-data
+	mkdir -p /var/lib/gvm/data-objects/gvmd
+	mkdir -p /var/lib/gvm/gvmd
+	mkdir -p /var/lib/gvm/private
+	mkdir -p /var/lib/gvm/scap-data
+	chown gvm:gvm -R /var/lib/gvm
 	
-	chown gvm:gvm -R /usr/local/share/openvas
-	chown gvm:gvm -R /usr/local/var/lib/openvas
-	
-	chown gvm:gvm -R /usr/local/share/gvm
-	
-	mkdir /usr/local/var/lib/gvm/cert-data
-	
-	chown gvm:gvm -R /usr/local/var/lib/gvm
-	chmod 770 -R /usr/local/var/lib/gvm
-	
-	chown gvm:gvm -R /usr/local/var/log/gvm
-	
-	chown gvm:gvm -R /usr/local/var/run
-	
-	touch /firstrun
+	mkdir -p /run/ospd/
+	chown gvm:gvm /run/ospd
+	su -c "touch /run/ospd/feed-update.lock" gvm
+	mkdir -p /var/lib/openvas/plugins/
+	chown -R gvm:gvm /var/lib/openvas/plugins/
+
+	touch /firstrun 
 fi
 
 if [ ! -f "/data/firstrun" ]; then
@@ -131,118 +145,62 @@ if [ $DB_PASSWORD != "none" ]; then
 	su -c "psql --dbname=gvmd --command=\"alter user gvm password '$DB_PASSWORD';\"" postgres
 fi
 
-if  [ ! -d /data/gvmd ]; then
-	echo "Creating gvmd folder..."
-	mkdir /data/gvmd
-	cp -r /report_formats /data/gvmd/
-fi
 
-if  [ ! -h /usr/local/var/lib/gvm/gvmd ]; then
-	echo "Fixing gvmd folder..."
-	rm -rf /usr/local/var/lib/gvm/gvmd
-	ln -s /data/gvmd /usr/local/var/lib/gvm/gvmd
-	
-	chown gvm:gvm -R /data/gvmd
-	chown gvm:gvm -R /usr/local/var/lib/gvm/gvmd
-fi
+echo "Creating gvmd folder..."
+su -c "mkdir -p /var/lib/gvm/gvmd/report_formats" gvm
+#cp -r /report_formats /var/lib/gvm/gvmd/
+chown gvm:gvm -R /var/lib/gvm
+find /var/lib/gvm/gvmd/report_formats -type f -name "generate" -exec chmod +x {} \;
 
-if  [ ! -d /data/certs ]; then
+if [ ! -d /var/lib/gvm/CA ] || [ ! -d /var/lib/gvm/private ] || [ ! -d /var/lib/gvm/private/CA ] ||
+	[ ! -f /var/lib/gvm/CA/cacert.pem ] || [ ! -f /var/lib/gvm/CA/clientcert.pem ] ||
+	[ ! -f /var/lib/gvm/CA/servercert.pem ] || [ ! -f /var/lib/gvm/private/CA/cakey.pem ] ||
+	[ ! -f /var/lib/gvm/private/CA/clientkey.pem ] || [ ! -f /var/lib/gvm/private/CA/serverkey.pem ]; then
 	echo "Creating certs folder..."
-	mkdir -p /data/certs/CA
-	mkdir -p /data/certs/private
-	
+	mkdir -p /var/lib/gvm/CA
+	mkdir -p /var/lib/gvm/private
+
 	echo "Generating certs..."
 	gvm-manage-certs -a
-	
-	cp /usr/local/var/lib/gvm/CA/* /data/certs/CA/
-	
-	cp -r /usr/local/var/lib/gvm/private/* /data/certs/private/
-	
-	chown gvm:gvm -R /data/certs
+
+	chown gvm:gvm -R /var/lib/gvm/
 fi
 
-if [ ! -h /usr/local/var/lib/gvm/CA ]; then
-	echo "Fixing certs CA folder..."
-	rm -rf /usr/local/var/lib/gvm/CA
-	ln -s /data/certs/CA /usr/local/var/lib/gvm/CA
-	
-	chown gvm:gvm -R /data/certs
-	chown gvm:gvm -R /usr/local/var/lib/gvm/CA
+if [ ! -f "/var/lib/gvm/.firstsync" ] && [ -f "/opt/gvm-sync-data.tar.xz" ]; then
+	mkdir /tmp/data
+
+	echo "Extracting internal data TAR..."
+	tar --extract --file=/opt/gvm-sync-data.tar.xz --directory=/tmp/data
+
+	chown gvm:gvm -R /tmp/data
+
+	#	ls -lahR /tmp/data
+
+	cp -a /tmp/data/nvt-feed/* /var/lib/openvas/plugins/
+	cp -a /tmp/data/data-objects/* /var/lib/gvm/data-objects/
+	cp -a /tmp/data/scap-data/* /var/lib/gvm/scap-data/
+	cp -a /tmp/data/cert-data/* /var/lib/gvm/cert-data/
+
+	chown gvm:gvm -R /var/lib/gvm
+	chown gvm:gvm -R /var/lib/openvas
+	chown gvm:gvm -R /var/log/gvm
+
+	find /var/lib/openvas/ -type d -exec chmod 755 {} +
+	find /var/lib/gvm/ -type d -exec chmod 755 {} +
+	find /var/lib/openvas/ -type f -exec chmod 644 {} +
+	find /var/lib/gvm/ -type f -exec chmod 644 {} +
+
+	if [ "${SETUP}" == "0" ]; then
+		rm /opt/gvm-sync-data.tar.xz
+	fi
+	rm -r /tmp/data
 fi
 
-if [ ! -h /usr/local/var/lib/gvm/private ]; then
-	echo "Fixing certs private folder..."
-	rm -rf /usr/local/var/lib/gvm/private
-	ln -s /data/certs/private /usr/local/var/lib/gvm/private
-	chown gvm:gvm -R /data/certs
-	chown gvm:gvm -R /usr/local/var/lib/gvm/private
-fi
+# Sync NVTs, CERT data, and SCAP data on container start
+/sync-all.sh
+touch /var/lib/gvm/.firstsync
 
-if  [ ! -d /data/plugins ]; then
-	echo "Creating NVT Plugins folder..."
-	mkdir /data/plugins
-fi
-
-if [ ! -h /usr/local/var/lib/openvas/plugins ]; then
-	echo "Fixing NVT Plugins folder..."
-	rm -rf /usr/local/var/lib/openvas/plugins
-	ln -s /data/plugins /usr/local/var/lib/openvas/plugins
-	chown gvm:gvm -R /data/plugins
-	chown gvm:gvm -R /usr/local/var/lib/openvas/plugins
-fi
-
-if  [ ! -d /data/cert-data ]; then
-	echo "Creating CERT Feed folder..."
-	mkdir /data/cert-data
-fi
-
-if [ ! -h /usr/local/var/lib/gvm/cert-data ]; then
-	echo "Fixing CERT Feed folder..."
-	rm -rf /usr/local/var/lib/gvm/cert-data
-	ln -s /data/cert-data /usr/local/var/lib/gvm/cert-data
-	chown gvm:gvm -R /data/cert-data
-	chown gvm:gvm -R /usr/local/var/lib/gvm/cert-data
-fi
-
-if  [ ! -d /data/scap-data ]; then
-	echo "Creating SCAP Feed folder..."
-	
-	mkdir /data/scap-data
-fi
-
-if [ ! -h /usr/local/var/lib/gvm/scap-data ]; then
-	echo "Fixing SCAP Feed folder..."
-	
-	rm -rf /usr/local/var/lib/gvm/scap-data
-	
-	ln -s /data/scap-data /usr/local/var/lib/gvm/scap-data
-	
-	chown gvm:gvm -R /data/scap-data
-	chown gvm:gvm -R /usr/local/var/lib/gvm/scap-data
-fi
-
-if  [ ! -d /data/data-objects/gvmd ]; then
-	echo "Creating GVMd Data Objects folder..."
-	
-	mkdir -p /data/data-objects/gvmd
-fi
-
-if [ ! -h /usr/local/var/lib/gvm/data-objects ]; then
-	echo "Fixing GVMd Data Objects folder..."
-	
-	rm -rf /usr/local/var/lib/gvm/data-objects
-	
-	ln -s /data/data-objects /usr/local/var/lib/gvm/data-objects
-	
-	chown gvm:gvm -R /data/data-objects
-	chown gvm:gvm -R /usr/local/var/lib/gvm/data-objects
-fi
-
-if [ "$AUTO_SYNC" = true ] || [ ! -f "/firstsync" ]; then
-	# Sync NVTs, CERT data, and SCAP data on container start
-	/sync-all.sh
-	touch /firstsync
-fi
+true
 
 ###########################
 #Remove leftover pid files#
@@ -269,7 +227,8 @@ sed -i "s/^relayhost.*$/relayhost = ${RELAYHOST}:${SMTPPORT}/" /etc/postfix/main
 service postfix start
 
 echo "Starting Open Scanner Protocol daemon for OpenVAS..."
-ospd-openvas --log-file /usr/local/var/log/gvm/ospd-openvas.log --unix-socket /var/run/ospd/ospd.sock --socket-mode 0o666 --log-level INFO
+ospd-openvas --log-file /var/log/gvm/ospd-openvas.log --unix-socket /var/run/ospd/
+.sock --socket-mode 0o666 --log-level INFO
 
 while  [ ! -S /var/run/ospd/ospd.sock ]; do
 	sleep 1
@@ -287,7 +246,7 @@ until su -c "gvmd --get-users" gvm; do
 	sleep 1
 done
 
-if [ ! -f "/data/created_gvm_user" ]; then
+if [ ! -f "/var/lib/gvm/.created_gvm_user" ]; then
 	echo "Creating Greenbone Vulnerability Manager admin user"
 	su -c "gvmd --role=\"Super Admin\" --create-user=\"$USERNAME\" --password=\"$PASSWORD\"" gvm
 	
@@ -299,7 +258,7 @@ if [ ! -f "/data/created_gvm_user" ]; then
 	
 	su -c "gvmd --modify-setting 78eceaec-3385-11ea-b237-28d24461215b --value ${ADDR[1]}" gvm
 	
-	touch /data/created_gvm_user
+	touch /var/lib/gvm/.created_gvm_user
 fi
 
 su -c "gvmd --user=\"$USERNAME\" --new-password=\"$PASSWORD\"" gvm
@@ -311,33 +270,28 @@ else
 	su -c "gsad --verbose --http-only --timeout=$TIMEOUT --no-redirect --mlisten=127.0.0.1 --mport=9390 --port=9392" gvm
 fi
 
-if [ $SSHD == "true" ]; then
+if [ "$SSHD" == "true" ]; then
 	echo "Starting OpenSSH Server..."
-	
-	if  [ ! -d /data/scanner-ssh-keys ]; then
+	if [ ! -d /var/lib/gvm/.ssh ]; then
 		echo "Creating scanner SSH keys folder..."
-		mkdir /data/scanner-ssh-keys
-		chown gvm:gvm -R /data/scanner-ssh-keys
+		mkdir -p /var/lib/gvm/.ssh
+		chown gvm:gvm -R /var/lib/gvm/.ssh
 	fi
-	if [ ! -h /usr/local/share/gvm/.ssh ]; then
-		echo "Fixing scanner SSH keys folder..."
-		rm -rf /usr/local/share/gvm/.ssh
-		ln -s /data/scanner-ssh-keys /usr/local/share/gvm/.ssh
-		chown gvm:gvm -R /data/scanner-ssh-keys
-		chown gvm:gvm -R /usr/local/share/gvm/.ssh
-	fi
-	
 	if [ ! -d /sockets ]; then
-		mkdir /sockets
+		mkdir -p /sockets
 		chown gvm:gvm -R /sockets
 	fi
-	
 	echo "gvm:gvm" | chpasswd
-	
-	rm -rf /var/run/sshd
+	rm -rfv /var/run/sshd
 	mkdir -p /var/run/sshd
-	
-	/usr/sbin/sshd -f /sshd_config -E /usr/local/var/log/gvm/sshd.log
+	if [ ! -f /etc/ssh/sshd_config ]; then
+		cp /opt/config/sshd_config /etc/ssh/sshd_config
+		chown root:root /etc/ssh/sshd_config
+	fi
+	${SUPVISD} start sshd
+	if [ "${DEBUG}" == "Y" ]; then
+		${SUPVISD} status sshd
+	fi
 fi
 
 GVMVER=$(su -c "gvmd --version" gvm )
@@ -352,4 +306,4 @@ echo ""
 echo "++++++++++++++++"
 echo "+ Tailing logs +"
 echo "++++++++++++++++"
-tail -F /usr/local/var/log/gvm/*
+tail -F /var/log/gvm/*
