@@ -142,6 +142,11 @@ if [ ! -f "/data/upgrade_to_21.4.0" ]; then
 	touch /data/upgrade_to_21.4.0
 fi
 
+if [ ! -d "/run/gvmd" ]; then
+	mkdir -p /run/gvmd
+	chown gvm:gvm -R /run/gvmd/
+fi
+
 su -c "gvmd --migrate" gvm
 
 if [ $DB_PASSWORD != "none" ]; then
