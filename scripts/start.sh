@@ -75,9 +75,9 @@ if [ ! -f "/firstrun" ]; then
 	ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 	echo "Creating Greenbone Vulnerability system user..."
-	sudo useradd -r -M -d /var/lib/gvm -U -G sudo -s /bin/bash gvm
-	sudo usermod -aG tty gvm
-	sudo usermod -aG sudo gvm
+	useradd -r -M -d /var/lib/gvm -U -G sudo -s /bin/bash gvm
+	usermod -aG tty gvm
+	usermod -aG sudo gvm
 #	useradd --home-dir /home/gvm gvm
 #	
 #	chown gvm:gvm -R /usr/local/share/openvas
