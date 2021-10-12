@@ -108,22 +108,22 @@ if [ ! -f "/firstrun" ]; then
 	mkdir -p /var/lib/openvas/plugins/
 	chown -R gvm:gvm /var/lib/openvas/plugins/
 	
-	sudo chown -R gvm:gvm /var/lib/gvm
-	sudo chown -R gvm:gvm /var/lib/openvas
-	sudo chown -R gvm:gvm /var/log/gvm
-	sudo chown -R gvm:gvm /run/gvm
+	chown -R gvm:gvm /var/lib/gvm
+	chown -R gvm:gvm /var/lib/openvas
+	chown -R gvm:gvm /var/log/gvm
+	chown -R gvm:gvm /run/gvm
 
-	sudo chmod -R g+srw /var/lib/gvm
-	sudo chmod -R g+srw /var/lib/openvas
-	sudo chmod -R g+srw /var/log/gvm
+	chmod -R g+srw /var/lib/gvm
+	chmod -R g+srw /var/lib/openvas
+	chmod -R g+srw /var/log/gvm
 
-	sudo chown gvm:gvm /usr/sbin/gvmd
-	sudo chmod 6750 /usr/sbin/gvmd
+	chown gvm:gvm /usr/sbin/gvmd
+	chmod 6750 /usr/sbin/gvmd
 
-	sudo chown gvm:gvm /usr/bin/greenbone-nvt-sync
-	sudo chmod 740 /usr/sbin/greenbone-feed-sync
-	sudo chown gvm:gvm /usr/sbin/greenbone-*-sync
-	sudo chmod 740 /usr/sbin/greenbone-*-sync
+	chown gvm:gvm /usr/bin/greenbone-nvt-sync
+	chmod 740 /usr/sbin/greenbone-feed-sync
+	chown gvm:gvm /usr/sbin/greenbone-*-sync
+	chmod 740 /usr/sbin/greenbone-*-sync
 
 	touch /firstrun 
 fi
