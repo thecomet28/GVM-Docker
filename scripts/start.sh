@@ -117,14 +117,6 @@ if [ ! -f "/firstrun" ]; then
 	chmod -R g+srw /var/lib/openvas
 	chmod -R g+srw /var/log/gvm
 
-	chown gvm:gvm /usr/sbin/gvmd
-	chmod 6750 /usr/sbin/gvmd
-
-	chown gvm:gvm /usr/bin/greenbone-nvt-sync
-	chmod 740 /usr/sbin/greenbone-feed-sync
-	chown gvm:gvm /usr/sbin/greenbone-*-sync
-	chmod 740 /usr/sbin/greenbone-*-sync
-
 	touch /firstrun 
 fi
 
