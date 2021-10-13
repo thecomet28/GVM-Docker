@@ -218,8 +218,7 @@ sed -i "s/^relayhost.*$/relayhost = ${RELAYHOST}:${SMTPPORT}/" /etc/postfix/main
 service postfix start
 
 echo "Starting Open Scanner Protocol daemon for OpenVAS..."
-ospd-openvas --log-file /var/log/gvm/ospd-openvas.log --unix-socket /var/run/ospd/
-.sock --socket-mode 0o666 --log-level INFO
+ospd-openvas --log-file /var/log/gvm/ospd-openvas.log --unix-socket /var/run/ospd/.sock --socket-mode 0o666 --log-level INFO
 
 while  [ ! -S /var/run/ospd/ospd.sock ]; do
 	sleep 1
