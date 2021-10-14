@@ -59,7 +59,7 @@ RUN mkdir /build && \
 RUN mkdir /build && \
     cd /build && \
 #    wget --no-verbose https://github.com/greenbone/gvmd/archive/$gvmd_version.tar.gz && \
-    wget --no-verbose https://github.com/thecomet28/gvmd/archive/refs/tags/v21.4.4-beta.1.tar.gz && \
+    wget --no-verbose https://github.com/thecomet28/gvmd/archive/v21.4.4-beta.1.tar.gz && \
 #    tar -zxf $gvmd_version.tar.gz && \
     tar -zxf v21.4.4-beta.1.tar.gz && \
     cd /build/*/ && \
