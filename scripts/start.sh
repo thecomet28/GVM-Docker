@@ -197,20 +197,20 @@ true
 #Remove leftover pid files#
 ###########################
 
-if [ -f /var/run/ospd.pid ]; then
-  rm /var/run/ospd.pid
+if [ -f /run/ospd/ospd.pid ]; then
+  rm /run/ospd/ospd.pid
 fi
 
 if [ -S /tmp/ospd.sock ]; then
   rm /tmp/ospd.sock
 fi
 
-if [ -S /var/run/ospd/ospd.sock ]; then
-  rm /var/run/ospd/ospd.sock
+if [ -S /run/ospd/ospd.sock ]; then
+  rm /run/ospd/ospd.sock
 fi
 
-if [ ! -d /var/run/ospd ]; then
-  mkdir /var/run/ospd
+if [ ! -d /run/ospd ]; then
+  mkdir /run/ospd
 fi
 
 echo "Starting Postfix for report delivery by email"
@@ -218,15 +218,15 @@ sed -i "s/^relayhost.*$/relayhost = ${RELAYHOST}:${SMTPPORT}/" /etc/postfix/main
 service postfix start
 
 echo "Starting Open Scanner Protocol daemon for OpenVAS..."
-ospd-openvas --log-file /var/log/gvm/ospd-openvas.log --unix-socket /var/run/ospd/ospd.sock --socket-mode 0o666 --log-level INFO
+ospd-openvas --log-file /var/log/gvm/ospd-openvas.log --unix-socket /run/ospd/ospd.sock --socket-mode 0o700 --log-level INFO
 
-while  [ ! -S /var/run/ospd/ospd.sock ]; do
+while  [ ! -S /run/ospd/ospd.sock ]; do
 	sleep 1
 done
 
 echo "Creating OSPd socket link from old location..."
 rm -rf /tmp/ospd.sock
-ln -s /var/run/ospd/ospd.sock /tmp/ospd.sock
+ln -s /run/ospd/ospd.sock /tmp/ospd.sock
 
 echo "Starting Greenbone Vulnerability Manager..."
 su -c "gvmd --listen=0.0.0.0 --port=9390 --max-ips-per-target=65536 --gnutls-priorities=SECURE128:-AES-128-CBC:-CAMELLIA-128-CBC:-VERS-SSL3.0:-VERS-TLS1.0:-VERS-TLS1.1" gvm
