@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:21.10
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG=C.UTF-8
@@ -12,7 +12,7 @@ ENV gvm_libs_version="v21.4.3" \
     #pggvm_version="fa973261bee877590e0d0096eb0f9213a38a7965" \
     gvmd_version="v21.4.4" \
     gsa_version="v21.4.3" \
-    gvm_tools_version="21.6.1" \
+    gvm_tools_version="21.10.0" \
     openvas_smb="v21.4.0" \
     open_scanner_protocol_daemon="v21.4.4" \
     ospd_openvas="v21.4.3" \
