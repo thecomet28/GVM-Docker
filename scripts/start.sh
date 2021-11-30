@@ -288,7 +288,7 @@ if [ $SSHD == "true" ]; then
 	rm -rf /var/run/sshd
 	mkdir -p /var/run/sshd
 	
-	/usr/sbin/sshd -f /sshd_config -E /usr/local/var/log/gvm/sshd.log
+	/usr/sbin/sshd -f /sshd_config
 fi
 
 GVMVER=$(su -c "gvmd --version" gvm )
