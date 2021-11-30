@@ -12,6 +12,7 @@ HTTPS=${HTTPS:-true}
 TZ=${TZ:-UTC}
 SSHD=${SSHD:-false}
 DB_PASSWORD=${DB_PASSWORD:-none}
+FIRST=${FIRST:-false}
 
 if [ ! -d "/run/redis" ]; then
 	mkdir /run/redis
@@ -236,7 +237,8 @@ until su -c "gvmd --get-users" gvm; do
 	sleep 1
 done
 
-if [[ ! -f "/var/lib/gvm/.created_gvm_user" || ! -f "/data/created_gvm_user" ]]; then
+#if [[ ! -f "/var/lib/gvm/.created_gvm_user" || ! -f "/data/created_gvm_user" ]]; then
+if [ $FIRST == "true" ]; then
 	echo "Creating Greenbone Vulnerability Manager admin user"
 	su -c "gvmd --role=\"Super Admin\" --create-user=\"$USERNAME\" --password=\"$PASSWORD\"" gvm
 	
