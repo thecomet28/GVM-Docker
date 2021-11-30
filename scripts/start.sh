@@ -236,7 +236,7 @@ until su -c "gvmd --get-users" gvm; do
 	sleep 1
 done
 
-if [ ! -f "/var/lib/gvm/.created_gvm_user" ]; then
+if [ ! -f "/var/lib/gvm/.created_gvm_user" ] || [ ! -f "/data/created_gvm_user"]; then
 	echo "Creating Greenbone Vulnerability Manager admin user"
 	su -c "gvmd --role=\"Super Admin\" --create-user=\"$USERNAME\" --password=\"$PASSWORD\"" gvm
 	
