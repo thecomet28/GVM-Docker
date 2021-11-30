@@ -262,30 +262,33 @@ else
 	su -c "gsad --verbose --http-only --timeout=$TIMEOUT --no-redirect --mlisten=127.0.0.1 --mport=9390 --port=9392" gvm
 fi
 
-if [ "$SSHD" == "true" ]; then
+if [ $SSHD == "true" ]; then
 	echo "Starting OpenSSH Server..."
-	if [ ! -d /var/lib/gvm/.ssh ]; then
+	
+	if  [ ! -d /data/scanner-ssh-keys ]; then
 		echo "Creating scanner SSH keys folder..."
-		mkdir -p /var/lib/gvm/.ssh
-		chown gvm:gvm -R /var/lib/gvm/.ssh
+		mkdir /data/scanner-ssh-keys
+		chown gvm:gvm -R /data/scanner-ssh-keys
 	fi
+	if [ ! -h /usr/local/share/gvm/.ssh ]; then
+		echo "Fixing scanner SSH keys folder..."
+		rm -rf /usr/local/share/gvm/.ssh
+		ln -s /data/scanner-ssh-keys /usr/local/share/gvm/.ssh
+		chown gvm:gvm -R /data/scanner-ssh-keys
+		chown gvm:gvm -R /usr/local/share/gvm/.ssh
+	fi
+	
 	if [ ! -d /sockets ]; then
-		mkdir -p /sockets
+		mkdir /sockets
 		chown gvm:gvm -R /sockets
 	fi
+	
 	echo "gvm:gvm" | chpasswd
-	rm -rfv /var/run/sshd
+	
+	rm -rf /var/run/sshd
 	mkdir -p /var/run/sshd
-	if [ ! -f /etc/ssh/sshd_config ]; then
-		cp /opt/config/sshd_config /etc/ssh/sshd_config
-		chown root:root /etc/ssh/sshd_config
-	fi
 	
 	/usr/sbin/sshd -f /sshd_config -E /usr/local/var/log/gvm/sshd.log
-	
-	if [ "${DEBUG}" == "Y" ]; then
-		${SUPVISD} status sshd
-	fi
 fi
 
 GVMVER=$(su -c "gvmd --version" gvm )
