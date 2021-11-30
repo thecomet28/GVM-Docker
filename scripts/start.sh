@@ -280,7 +280,9 @@ if [ "$SSHD" == "true" ]; then
 		cp /opt/config/sshd_config /etc/ssh/sshd_config
 		chown root:root /etc/ssh/sshd_config
 	fi
-	${SUPVISD} start sshd
+	
+	/usr/sbin/sshd -f /sshd_config -E /usr/local/var/log/gvm/sshd.log
+	
 	if [ "${DEBUG}" == "Y" ]; then
 		${SUPVISD} status sshd
 	fi
