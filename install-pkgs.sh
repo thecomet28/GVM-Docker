@@ -12,6 +12,7 @@ apt-get update
 { cat <<EOF
 bison
 build-essential
+cron
 ca-certificates
 cmake
 curl
@@ -43,6 +44,7 @@ libsnmp-dev
 libssh-gcrypt-dev
 libunistring-dev
 libxml2-dev
+nano
 net-tools
 nmap
 nsis
