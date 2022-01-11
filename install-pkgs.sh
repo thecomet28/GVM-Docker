@@ -4,7 +4,7 @@ apt-get update
 
 apt-get install -y gnupg curl
 
-echo "deb http://apt.postgresql.org/pub/repos/apt groovy-pgdg main" > /etc/apt/sources.list.d/pgdg.list
+echo "deb http://apt.postgresql.org/pub/repos/apt impish-pgdg main" > /etc/apt/sources.list.d/pgdg.list
 curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
 
 apt-get update
@@ -12,6 +12,7 @@ apt-get update
 { cat <<EOF
 bison
 build-essential
+cron
 ca-certificates
 cmake
 curl
@@ -43,6 +44,7 @@ libsnmp-dev
 libssh-gcrypt-dev
 libunistring-dev
 libxml2-dev
+nano
 net-tools
 nmap
 nsis

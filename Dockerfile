@@ -1,4 +1,4 @@
-FROM ubuntu:20.10
+FROM ubuntu:21.10
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG=C.UTF-8
@@ -7,16 +7,16 @@ COPY install-pkgs.sh /install-pkgs.sh
 
 RUN bash /install-pkgs.sh
 
-ENV gvm_libs_version="v21.4.0" \
-    openvas_scanner_version="v21.4.0" \
+ENV gvm_libs_version="v21.4.3" \
+    openvas_scanner_version="v21.4.3" \
     #pggvm_version="fa973261bee877590e0d0096eb0f9213a38a7965" \
-    gvmd_version="v21.4.0" \
-    gsa_version="v21.4.0" \
-    gvm_tools_version="21.1.0" \
+    gvmd_version="v21.4.4" \
+    gsa_version="v21.4.3" \
+    gvm_tools_version="21.10.0" \
     openvas_smb="v21.4.0" \
-    open_scanner_protocol_daemon="v21.4.0" \
-    ospd_openvas="v21.4.0" \
-    python_gvm_version="21.1.3"
+    open_scanner_protocol_daemon="v21.4.4" \
+    ospd_openvas="v21.4.3" \
+    python_gvm_version="21.10.0"
 
     #
     # install libraries module for the Greenbone Vulnerability Management Solution
@@ -51,24 +51,7 @@ RUN mkdir /build && \
     make install && \
     cd / && \
     rm -rf /build
-
-    #
-    # Install Greenbone Library for GVM helper functions in PostgreSQL
-    #
     
-#RUN mkdir /build && \
-#    cd /build && \
-#    wget --no-verbose https://github.com/greenbone/pg-gvm/archive/$pggvm_version.tar.gz && \
-#    tar -zxf $pggvm_version.tar.gz && \
-#    cd /build/*/ && \
-#    mkdir build && \
-#    cd build && \
-#    cmake -DCMAKE_BUILD_TYPE=Release .. && \
-#    make && \
-#    make install && \
-#    cd / && \
-#    rm -rf /build
-
     #
     # Install Greenbone Vulnerability Manager (GVMD)
     #
@@ -76,6 +59,8 @@ RUN mkdir /build && \
 RUN mkdir /build && \
     cd /build && \
     wget --no-verbose https://github.com/greenbone/gvmd/archive/$gvmd_version.tar.gz && \
+#    wget --no-verbose https://github.com/thecomet28/gvmd/archive/$gvmd_version.tar.gz && \
+#    tar -zxf $gvmd_version.tar.gz && \
     tar -zxf $gvmd_version.tar.gz && \
     cd /build/*/ && \
     mkdir build && \
