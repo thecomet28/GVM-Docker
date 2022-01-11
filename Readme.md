@@ -24,7 +24,6 @@ The key points to take away from the diagram below, is the way our setup establi
 | Tag       | Description              |
 | --------- | ------------------------ |
 | latest    | Latest stable version    |
-| {version} | Specific stable version  |
 | dev       | Latest development build |
 
 ## Estimated Hardware Requirements
