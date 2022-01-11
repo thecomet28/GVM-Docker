@@ -263,7 +263,7 @@ else
 	su -c "gsad --verbose --http-only --timeout=$TIMEOUT --no-redirect --mlisten=127.0.0.1 --mport=9390 --port=9392" gvm
 fi
 
-if [ "$SSHD" == "true" ]; then
+if [ $SSHD == "true" ]; then
 	echo "Starting OpenSSH Server..."
 	if [ ! -d /var/lib/gvm/.ssh ]; then
 		echo "Creating scanner SSH keys folder..."
