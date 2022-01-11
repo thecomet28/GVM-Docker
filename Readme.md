@@ -1,19 +1,17 @@
-[![Docker Pulls](https://img.shields.io/docker/pulls/securecompliance/gvm.svg)](https://hub.docker.com/r/securecompliance/gvm/)
-[![Docker Stars](https://img.shields.io/docker/stars/securecompliance/gvm.svg)](https://hub.docker.com/r/securecompliance/gvm/)
-[![Gitter](https://badges.gitter.im/Secure-Compliance-Solutions-LLC/gvm-docker.svg)](https://gitter.im/Secure-Compliance-Solutions-LLC/gvm-docker)
+![Netizen Logo](https://www.netizen.net/assets/img/netizen_banner_cybersecure_small.png)
 
-Feature Requests Ideas [Click Here](https://github.com/Secure-Compliance-Solutions-LLC/GVM-Docker/discussions/categories/feature-request)
+Visit out Website: https://www.netizen.net
 
-![Greenbone Vulnerability Management with OpenVAS](https://github.com/SCS-Labs/Images/raw/main/scs-gvm.png)
+# Greenbone Vulnerability Manager/Scanner
+## Latest Version: 21.4.3
+![Docker Pulls](https://img.shields.io/docker/pulls/netizensoc/gvm-scanner?style=plastic)
+![GitHub](https://img.shields.io/github/license/thecomet28/gvm-docker)
 
 This setup is based on Greenbone Vulnerability Management and OpenVAS. We have made improvements to help stability and functionality.
 
-You want to send GVM/OpenVAS results to Elasticsearch, try our [GVM Logstash project](https://github.com/Secure-Compliance-Solutions-LLC/gvm-logstash).
-
 ## Documentation
-* [View our detailed instructions on gitbook](https://securecompliance.gitbook.io/projects/openvas-greenbone-deployment-full-guide)
-
-If you would like something added to the documentation please create a issue [GVM-Docker Gitbook Repo](https://github.com/Secure-Compliance-Solutions-LLC/gitbook/issues)
+* Detailed instructions can be requested by emailing us at info@netizen.net. We will be publishing documentation soon.
+* A remote scanner can be found at visiting our [Openvas-Docker](https://github.com/thecomet28/OpenVAS-Docker).
 
 ## Architecture
 
@@ -21,16 +19,23 @@ The key points to take away from the diagram below, is the way our setup establi
 
 ![GVM Container Architecture](https://securecompliance.co/wp-content/uploads/2020/11/SCS-GVM-Docker.svg)
 
+## Docker Tags
+
+| Tag       | Description              |
+| --------- | ------------------------ |
+| latest    | Latest stable version    |
+| dev       | Latest development build |
+
+## Estimated Hardware Requirements
+
+| Hosts              | CPU Cores     | Memory    | Disk Space |
+| :----------------- | :------------ | :-------- | :--------- |
+| 512 active IPs     | 4@2GHz cores  | 8 GB RAM  | 30 GB      |
+| 2,500 active IPs   | 6@2GHz cores  | 12 GB RAM | 60 GB      |
+| 10,000 active IPs  | 8@3GHz cores  | 16 GB RAM | 250 GB     |
+| 25,000 active IPs  | 16@3GHz cores | 32 GB RAM | 1 TB       |
+| 100,000 active IPs | 32@3GHz cores | 64 GB RAM | 2 TB       |
+
 
 ## About
-
-We will do our best to conduct all development openly by documenting features and requirements, and managing the project using [issues](https://github.com/Secure-Compliance-Solutions-LLC/GVM-Docker/issues), [milestones](https://github.com/Secure-Compliance-Solutions-LLC/GVM-Docker/milestones), and [projects](https://github.com/Secure-Compliance-Solutions-LLC/GVM-Docker/projects).
-
-<!--
-## Dashboard - Sneak peak at our upcoming kibana dashboards
-
-Soon we will release instructions on connecting your OpenVAS vulnerability details to elastic to create dashboards that are interactive and actually work. 
-
-Below is a preview of what we're working on.
-![Sneak Peak](https://securecompliance.co/wp-content/uploads/2020/11/dashboard.png)
--->
+Any Issues or Suggestions for the Project can be communicated via the [issues](https://github.com/thecomet28/GVM-Docker/issues). Thanks.
