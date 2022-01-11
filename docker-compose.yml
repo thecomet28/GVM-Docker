@@ -1,7 +1,7 @@
 version: "3"
 services:
     gvm:
-        image: netizensoc/gvm-scanner:dev
+        image: netizensoc/gvm-scanner:latest
         volumes:
           - gvm-data:/data
         environment:
