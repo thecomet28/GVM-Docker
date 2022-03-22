@@ -112,7 +112,7 @@ if [ ! -f "/firstrun" ]; then
 	chown -R gvm:gvm /var/lib/gvm
 	chown -R gvm:gvm /var/lib/openvas
 	chown -R gvm:gvm /var/log/gvm
-	chown -R gvm:gvm /run/gvm
+	chown -R gvm:gvm /run/gvmd
 
 	chmod -R g+srw /var/lib/gvm
 	chmod -R g+srw /var/lib/openvas
