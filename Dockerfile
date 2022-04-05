@@ -97,15 +97,16 @@ RUN mkdir /build && \
     wget --no-verbose https://github.com/greenbone/gsa/archive/$gsa_version.tar.gz && \
     tar -zxf $gsa_version.tar.gz && \
     # https://github.com/Secure-Compliance-Solutions-LLC/GVM-Docker/issues/115
-    sed -i 's/300000/90000000/g' /build/*/gsa/src/gmp/gmpsettings.js && \
-    find /build/ -type f -exec sed -i 's/timeout: 30000/timeout: 9000000/g' {} \; && \
-    find /build/ -type f -exec sed -i 's/expect(settings.timeout).toEqual(30000)/expect(settings.timeout).toEqual(9000000)/g' {} \; && \
-    cd /build/*/ && \
-    mkdir build && \
-    cd build && \
-    cmake -DCMAKE_BUILD_TYPE=Release .. && \
-    make && \
-    make install && \
+    #sed -i 's/300000/90000000/g' /build/*/gsa/src/gmp/gmpsettings.js && \
+    #find /build/ -type f -exec sed -i 's/timeout: 30000/timeout: 9000000/g' {} \; && \
+    #find /build/ -type f -exec sed -i 's/expect(settings.timeout).toEqual(30000)/expect(settings.timeout).toEqual(9000000)/g' {} \; && \
+    #cd /build/*/ && \
+    #mkdir build && \
+    #cd build && \
+    #cmake -DCMAKE_BUILD_TYPE=Release .. && \
+    #make && \
+    #make install && \
+    yarn install \
     cd / && \
     rm -rf /build
     
