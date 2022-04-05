@@ -139,8 +139,8 @@ RUN mkdir /build && \
     tar -zxf $ospd_openvas.tar.gz && \
     cd /build/*/ && \
     #python3 setup.py install && \
-    apt remove -y python3-lxml
-    python3 -m pip install -U pip
+    apt remove -y python3-lxml && \
+    python3 -m pip install -U pip && \
     cd / && \
     rm -rf /build
     
