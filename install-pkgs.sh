@@ -58,7 +58,7 @@ postgresql-server-dev-12
 python3-defusedxml
 python3-dev
 python3-dialog
-#python3-lxml
+python3-lxml
 python3-paramiko
 python3-pip
 python3-polib
