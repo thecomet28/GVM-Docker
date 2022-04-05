@@ -106,7 +106,7 @@ RUN mkdir /build && \
     #cmake -DCMAKE_BUILD_TYPE=Release .. && \
     #make && \
     #make install && \
-    yarn install \
+    yarn install && \
     cd / && \
     rm -rf /build
     
