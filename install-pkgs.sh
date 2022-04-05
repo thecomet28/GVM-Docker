@@ -58,12 +58,16 @@ postgresql-server-dev-12
 python3-defusedxml
 python3-dev
 python3-dialog
-python3-lxml
+#python3-lxml
 python3-paramiko
 python3-pip
 python3-polib
 python3-psutil
 python3-setuptools
+python3-packaging
+python3-wrapt
+python3-cffi
+python3-redis
 redis-server
 redis-tools
 rpm
