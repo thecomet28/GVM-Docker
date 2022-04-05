@@ -7,16 +7,16 @@ COPY install-pkgs.sh /install-pkgs.sh
 
 RUN bash /install-pkgs.sh
 
-ENV gvm_libs_version="v21.4.3" \
-    openvas_scanner_version="v21.4.3" \
+ENV gvm_libs_version="v21.4.4" \
+    openvas_scanner_version="v21.4.4" \
     #pggvm_version="fa973261bee877590e0d0096eb0f9213a38a7965" \
-    gvmd_version="v21.4.4" \
-    gsa_version="v21.4.3" \
+    gvmd_version="v21.4.5" \
+    gsa_version="v21.4.4" \
     gvm_tools_version="21.10.0" \
     openvas_smb="v21.4.0" \
-    open_scanner_protocol_daemon="v21.4.4" \
-    ospd_openvas="v21.4.3" \
-    python_gvm_version="21.10.0"
+  #  open_scanner_protocol_daemon="v21.4.4" \
+    ospd_openvas="v21.4.4" \
+    python_gvm_version="21.11.0"
 
     #
     # install libraries module for the Greenbone Vulnerability Management Solution
@@ -116,17 +116,17 @@ RUN mkdir /build && \
 RUN pip3 install python-gvm==$python_gvm_version
     
     #
-    # Install Open Scanner Protocol daemon (OSPd)
+    # Install Open Scanner Protocol daemon (OSPd) - Depreciated
     #
     
-RUN mkdir /build && \
-    cd /build && \
-    wget --no-verbose https://github.com/greenbone/ospd/archive/$open_scanner_protocol_daemon.tar.gz && \
-    tar -zxf $open_scanner_protocol_daemon.tar.gz && \
-    cd /build/*/ && \
-    python3 setup.py install && \
-    cd / && \
-    rm -rf /build
+#RUN mkdir /build && \
+#    cd /build && \
+#    wget --no-verbose https://github.com/greenbone/ospd/archive/$open_scanner_protocol_daemon.tar.gz && \
+#    tar -zxf $open_scanner_protocol_daemon.tar.gz && \
+#    cd /build/*/ && \
+#    python3 setup.py install && \
+#    cd / && \
+#    rm -rf /build
     
     #
     # Install Open Scanner Protocol for OpenVAS
